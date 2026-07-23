@@ -1,19 +1,29 @@
 import { ErrorReason, KRRecord, Kuikly, KuiklyRenderBaseView } from '@kuikly-open/render';
 import router from '@ohos.router';
 import { BuilderNameConstants, RouterModule, RouterNameConstants } from 'customrouter';
+import { kuiklyModuleType } from '../interface/kuiklyMoudle';
 import { KuiklyViewDelegate } from '../kuikly/KuiklyViewDelegate';
 import globalNativeManager from '../kuikly/MyNativeManager';
+import { BusinessError } from '@kit.BasicServicesKit';
 
 @Entry
-@Component
+@ComponentV2
 export struct KuiklyPage {
   kuiklyViewDelegate = new KuiklyViewDelegate();
   pageName?: string;
   pageData?: KRRecord;
-  @State exception?: string = "";
+  @Local exception?: string = "";
+  @Param @Once routerName?: Object = ''
 
   aboutToAppear() {
     AppStorage.setOrCreate<UIContext>("context", this.getUIContext());
+
+    try {
+      const res = (this.routerName as kuiklyModuleType).routerName
+      console.log('KuiklyPageAboutToAppear: ' + res)
+    } catch (e) {
+      console.log('KuiklyPageAboutToAppearError: ' + JSON.stringify(e))
+    }
 
     const params = router.getParams() as Record<string, Object>;
     this.pageName = params?.pageName as string;
@@ -52,7 +62,7 @@ export struct KuiklyPage {
 @Builder
 export function harBuilder(value: object) {
   NavDestination() {
-    KuiklyPage()
+    KuiklyPage({ routerName: value})
   }
   .hideTitleBar(true)
   .title('KuiklyPage')

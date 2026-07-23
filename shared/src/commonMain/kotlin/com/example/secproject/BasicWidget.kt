@@ -60,6 +60,7 @@ import com.tencent.kuikly.compose.ui.platform.LocalActivity
 import com.tencent.kuikly.compose.ui.platform.LocalDensity
 import com.tencent.kuikly.compose.ui.text.TextLayoutResult
 import com.tencent.kuikly.compose.ui.text.TextStyle
+import com.tencent.kuikly.compose.ui.text.input.VisualTransformation
 import com.tencent.kuikly.compose.ui.text.font.FontWeight
 import com.tencent.kuikly.compose.ui.text.style.TextAlign
 import com.tencent.kuikly.compose.ui.unit.Dp
@@ -365,6 +366,8 @@ internal fun TextField(
     textStyle: TextStyle = TextStyle.Default,
     placeholderColor: Color? = null,
     cursorBrush: Brush = SolidColor(Color.Black),
+    singleLine: Boolean = false,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     maxLines: Int = Int.MAX_VALUE,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -403,7 +406,9 @@ internal fun TextField(
         value = value,
         onValueChange = currentOnValueChange,
         textStyle = textStyle,
+        singleLine = singleLine,
         maxLines = maxLines,
+        visualTransformation = visualTransformation,
         onTextLayout = currentOnTextLayout,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

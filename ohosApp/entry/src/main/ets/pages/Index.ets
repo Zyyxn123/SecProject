@@ -5,6 +5,10 @@ import { BuilderNameConstants, buildRouterModel, RouterModule, RouterNameConstan
 struct Index {
   @State exception?: string = "";
   @State entryHapRouter: NavPathStack = new NavPathStack()
+  // @StorageProp('bottomRectHeight')
+  // bottomRectHeight: number = 0;
+  // @StorageProp('topRectHeight')
+  // topRectHeight: number = 0;
 
 
   aboutToAppear(): void {
@@ -24,18 +28,31 @@ struct Index {
       Column() {
         Button('跳转到 kuikly compose 页面')
           .onClick(() => {
-            buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage)
+            // this.getUIContext().getPromptAction().showToast()
+            buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage, new Object({
+              routerName: 'LoginPage'
+            }))
           })
+          .margin({ top: 40 })
       }
       .width('100%')
       .height('100%')
-      .expandSafeArea([SafeAreaType.KEYBOARD]);
+      .expandSafeArea([SafeAreaType.KEYBOARD])
     }
+    .onAppear(() => {
+      buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage, new Object({
+        routerName: 'LoginPage'
+      }))
+    })
     .title('NavIndex')
     .hideTitleBar(true)
     .navDestination(this.routerMap)
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
     .height('100%')
-    .width('100%');
+    .width('100%')
+    // .padding({
+    //   top: this.getUIContext().px2vp(this.topRectHeight),
+    //   bottom: this.getUIContext().px2vp(this.bottomRectHeight)
+    // })
   }
 }
