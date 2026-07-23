@@ -1,14 +1,13 @@
 {
-  "name": "entry",
+  "name": "kuiklycompose",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
-  "main": "",
+  "main": "Index.ets",
   "author": "",
-  "license": "",
+  "license": "Apache-2.0",
   "dependencies": {
+    "libkuiklycompose.so": "file:./src/main/cpp/types/libkuiklycompose",
     "@kuikly-open/render": '2.7.0',
     "@ohos/apng": "^1.0.0-rc.8",
-    "libentry.so": "file:./src/main/cpp/types/libentry",
-    "kuiklycompose": "file:../commons/kuiklycompose"
   }
 }

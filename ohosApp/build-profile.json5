@@ -1,6 +1,19 @@
 {
   "app": {
     "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "C:\\Users\\yunyuZhu\\.ohos\\config\\default_ohosApp_iMpPpEVA0pC8311e6GYjCrOJWLXUKJIC3rHmMrsr1PY=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001A8BC3194FFD50AA52B330F6C67D596ADD52221F6CD6127336A083A878D8052577C6949E63030A",
+          "profile": "C:\\Users\\yunyuZhu\\.ohos\\config\\default_ohosApp_iMpPpEVA0pC8311e6GYjCrOJWLXUKJIC3rHmMrsr1PY=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "C:\\Users\\yunyuZhu\\.ohos\\config\\default_ohosApp_iMpPpEVA0pC8311e6GYjCrOJWLXUKJIC3rHmMrsr1PY=.p12",
+          "storePassword": "0000001AC9966ACAA9BDD2D4F9A5AEB98BEFAF8F13529792C543975E02C6B3C8DCC705C44866A635FB2F"
+        }
+      }
     ],
     "products": [
       {
@@ -28,6 +41,18 @@
     {
       "name": "entry",
       "srcPath": "./entry",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "kuiklycompose",
+      "srcPath": "./commons/kuiklycompose",
       "targets": [
         {
           "name": "default",
