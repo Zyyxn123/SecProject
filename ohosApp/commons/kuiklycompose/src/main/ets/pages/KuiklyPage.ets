@@ -1,11 +1,12 @@
 import { ErrorReason, KRRecord, Kuikly, KuiklyRenderBaseView } from '@kuikly-open/render';
 import router from '@ohos.router';
+import { BuilderNameConstants, RouterModule, RouterNameConstants } from 'customrouter';
 import { KuiklyViewDelegate } from '../kuikly/KuiklyViewDelegate';
 import globalNativeManager from '../kuikly/MyNativeManager';
 
 @Entry
 @Component
-export struct demo {
+export struct KuiklyPage {
   kuiklyViewDelegate = new KuiklyViewDelegate();
   pageName?: string;
   pageData?: KRRecord;
@@ -46,4 +47,23 @@ export struct demo {
   onPageHide(): void {
     this.kuiklyViewDelegate.pageDidDisappear();
   }
+}
+
+@Builder
+export function harBuilder(value: object) {
+  NavDestination() {
+    KuiklyPage()
+  }
+  .hideTitleBar(true)
+  .title('KuiklyPage')
+  .onBackPressed(() => {
+    RouterModule.pop(RouterNameConstants.ENTRY_HAP)
+    return true
+  })
+}
+
+const builderName = BuilderNameConstants.HAR_kuiklycompose_kuiklyPage
+if (!RouterModule.getBuilder(builderName)) {
+  const builder: WrappedBuilder<[object]> = wrapBuilder(harBuilder)
+  RouterModule.registerBuilder(builderName, builder)
 }

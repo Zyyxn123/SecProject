@@ -9,5 +9,6 @@
     "libkuiklycompose.so": "file:./src/main/cpp/types/libkuiklycompose",
     "@kuikly-open/render": '2.7.0',
     "@ohos/apng": "^1.0.0-rc.8",
+    "customrouter": "file:../../commons/customRouter",
   }
 }
