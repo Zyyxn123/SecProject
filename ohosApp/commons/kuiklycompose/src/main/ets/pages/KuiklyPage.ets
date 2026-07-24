@@ -1,5 +1,4 @@
 import { ErrorReason, KRRecord, Kuikly, KuiklyRenderBaseView } from '@kuikly-open/render';
-import router from '@ohos.router';
 import { BuilderNameConstants, RouterModule, RouterNameConstants } from 'customrouter';
 import { kuiklyModuleType } from '../interface/kuiklyMoudle';
 import { KuiklyViewDelegate } from '../kuikly/KuiklyViewDelegate';
@@ -25,7 +24,7 @@ export struct KuiklyPage {
       console.log('KuiklyPageAboutToAppearError: ' + JSON.stringify(e))
     }
 
-    const params = router.getParams() as Record<string, Object>;
+    const params = this.routerName as Record<string, Object>;
     this.pageName = params?.pageName as string;
     this.pageData = params?.pageData as KRRecord;
   }
@@ -33,7 +32,7 @@ export struct KuiklyPage {
   build() {
     Stack() {
       Kuikly({
-        pagerName: this.pageName ?? 'router',
+        pagerName: this.pageName ?? 'login',
         pagerData: this.pageData ?? {},
         delegate: this.kuiklyViewDelegate,
         nativeManager: globalNativeManager,

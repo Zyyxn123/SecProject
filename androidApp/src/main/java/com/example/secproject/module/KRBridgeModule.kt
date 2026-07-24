@@ -34,6 +34,10 @@ class KRBridgeModule : KuiklyRenderBaseModule() {
                 openPage(params)
             }
 
+            "replacePage" -> {
+                replacePage(params)
+            }
+
             "copyToPasteboard" -> {
                 copyToPasteboard(params)
             }
@@ -124,6 +128,30 @@ class KRBridgeModule : KuiklyRenderBaseModule() {
         val ctx = context ?: return
         val paramJSON = JSONObject(params)
         val url = paramJSON.optString("url")
+    }
+
+    /**
+     * Replaces this render activity instead of adding the destination to the back stack.
+     *
+     * The destination is started before the current activity is finished so the transition
+     * remains continuous and the user cannot return to an authenticated page with Back.
+     */
+    private fun replacePage(params: String?) {
+        if (params == null) {
+            return
+        }
+
+        val paramJSON = JSONObject(params)
+        val pageName = paramJSON.optString("pageName")
+        if (pageName.isBlank()) {
+            Log.w("KuiklyRender", "replacePage ignored: pageName is empty")
+            return
+        }
+
+        val pageData = paramJSON.optJSONObject("pageData") ?: JSONObject()
+        val hostActivity = activity ?: return
+        KuiklyRenderActivity.start(hostActivity, pageName, pageData)
+        hostActivity.finish()
     }
 
     private fun closePage(params: String?) {

@@ -30,7 +30,7 @@ struct Index {
           .onClick(() => {
             // this.getUIContext().getPromptAction().showToast()
             buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage, new Object({
-              routerName: 'LoginPage'
+              routerName: 'login'
             }))
           })
           .margin({ top: 40 })
@@ -39,11 +39,11 @@ struct Index {
       .height('100%')
       .expandSafeArea([SafeAreaType.KEYBOARD])
     }
-    .onAppear(() => {
-      buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage, new Object({
-        routerName: 'LoginPage'
-      }))
-    })
+    // .onAppear(() => {
+    //   buildRouterModel(RouterNameConstants.ENTRY_HAP, BuilderNameConstants.HAR_kuiklycompose_kuiklyPage, new Object({
+    //     routerName: 'LoginPage'
+    //   }))
+    // })
     .title('NavIndex')
     .hideTitleBar(true)
     .navDestination(this.routerMap)

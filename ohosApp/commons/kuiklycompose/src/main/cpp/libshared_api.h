@@ -152,6 +152,20 @@ typedef struct {
               libshared_KInt (*com_example_secproject_base_BridgeModule$stableprop_getter___)();
               libshared_KInt (*com_example_secproject_base_Utils$stableprop_getter___)();
             } base;
+            struct {
+              libshared_KInt (*com_example_secproject_pages_LoginPage$stableprop_getter)();
+              libshared_KInt (*com_example_secproject_pages_MainPage$stableprop_getter)();
+              libshared_KInt (*com_example_secproject_pages_RegisterPage$stableprop_getter)();
+              libshared_KInt (*com_example_secproject_pages_LoginPage$stableprop_getter_)();
+              libshared_KInt (*com_example_secproject_pages_MainPage$stableprop_getter_)();
+              libshared_KInt (*com_example_secproject_pages_RegisterPage$stableprop_getter_)();
+              libshared_KInt (*com_example_secproject_pages_LoginPage$stableprop_getter__)();
+              libshared_KInt (*com_example_secproject_pages_MainPage$stableprop_getter__)();
+              libshared_KInt (*com_example_secproject_pages_RegisterPage$stableprop_getter__)();
+              libshared_KInt (*com_example_secproject_pages_LoginPage$stableprop_getter___)();
+              libshared_KInt (*com_example_secproject_pages_MainPage$stableprop_getter___)();
+              libshared_KInt (*com_example_secproject_pages_RegisterPage$stableprop_getter___)();
+            } pages;
             libshared_KInt (*com_example_secproject_Border$stableprop_getter)();
             libshared_KInt (*com_example_secproject_ComposeRoutePager$stableprop_getter)();
             libshared_KInt (*com_example_secproject_ImageAdapterBenchmarks$stableprop_getter)();
@@ -175,6 +189,7 @@ typedef struct {
             libshared_KInt (*com_example_secproject_ComposeRoutePager$stableprop_getter__)();
             libshared_KInt (*com_example_secproject_ImageAdapterBenchmarks$stableprop_getter__)();
             void (*jumpPage)(libshared_kref_com_tencent_kuikly_core_pager_Pager pager, const char* inputText);
+            void (*replacePage)(libshared_kref_com_tencent_kuikly_core_pager_Pager pager, const char* inputText);
           } secproject;
         } example;
       } com;

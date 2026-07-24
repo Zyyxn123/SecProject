@@ -35,8 +35,11 @@ import com.tencent.kuikly.core.nvi.serialization.json.JSONObject
 import com.tencent.kuikly.core.pager.Pager
 import com.tencent.kuikly.core.utils.urlParams
 import com.example.secproject.base.BasePager
+import com.example.secproject.base.BridgeModule
 import com.example.secproject.base.bridgeModule
 import com.example.secproject.base.Utils
+import com.tencent.kuikly.compose.extension.lineSpacing
+import com.tencent.kuikly.compose.foundation.clickable
 import com.tencent.kuikly.compose.foundation.layout.fillMaxWidth
 
 @Page("router", supportInLocal = true)
@@ -57,6 +60,44 @@ internal class ComposeRoutePager : BasePager() {
         const val TEXT_KEY = "text"
         const val TITLE = "Kuikly页面路由"
         const val AAR_MODE_TIP = "如：router 或者 router&key=value （&后面为页面参数）"
+    }
+}
+
+@Page("nav", supportInLocal = true)
+internal class NewPager : BasePager() {
+
+    override fun willInit() {
+        super.willInit()
+        setContent {
+            Sample()
+        }
+    }
+
+}
+
+@Composable
+internal fun Sample() {
+    val localPager = LocalActivity.current.getPager() as Pager
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 40.dp)
+            .lineSpacing(30.0F)
+    ) {
+        Text(
+            "nihao shijie woxihuanni",
+            modifier = Modifier
+                .clickable {
+                    localPager.acquireModule<RouterModule>(RouterModule.MODULE_NAME).closePage()
+                    jumpPage(localPager, "image_adapter")
+                })
+        Text(
+            "awfafafafafafawfawf",
+            modifier = Modifier
+                .clickable {
+                    jumpPage(localPager, "image_adapter")
+                })
     }
 }
 
@@ -152,8 +193,7 @@ fun jumpPage(pager: Pager, inputText: String) {
 }
 
 /**
- * Replaces the current Kuikly page with [inputText] instead of adding another page to the stack.
- * RouterModule has no replace API, so replacement is expressed as pop-current then push-target.
+ * Replaces the current Kuikly page through each platform's native router implementation.
  */
 fun replacePage(pager: Pager, inputText: String) {
     val params = urlParams("pageName=$inputText")
@@ -162,7 +202,5 @@ fun replacePage(pager: Pager, inputText: String) {
         pageData.put(it.key, it.value)
     }
     val pageName = pageData.optString("pageName")
-    val routerModule = pager.acquireModule<RouterModule>(RouterModule.MODULE_NAME)
-    routerModule.closePage()
-    routerModule.openPage(pageName, pageData)
+    pager.acquireModule<BridgeModule>(BridgeModule.MODULE_NAME).replacePage(pageName, pageData)
 }

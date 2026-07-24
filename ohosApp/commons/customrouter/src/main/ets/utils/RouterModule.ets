@@ -41,6 +41,12 @@ export class RouterModule {
     RouterModule.getRouter(router.routerName).pushPath({ name: router.builderName, param: router.param })
   }
 
+  public static async replace(router: RouterModel): Promise<void> {
+    const harName = router.builderName.split('_')[0]
+    await import(harName).then((ns: ESObject): Promise<void> => ns.harInit(router.builderName))
+    RouterModule.getRouter(router.routerName).replacePath({ name: router.builderName, param: router.param })
+  }
+
   // Obtain the page stack and pop it.
   public static pop(routerName: string): void {
     // Find the corresponding route stack for pop.

@@ -22,3 +22,11 @@ export function buildRouterModel(routerName: string, builderName: string, param?
   RouterModule.push(router)
 }
 
+export function replaceRouterModel(routerName: string, builderName: string, param?: object) {
+  let router: RouterModel = new RouterModel()
+  router.builderName = builderName
+  router.routerName = routerName
+  router.param = param
+  RouterModule.replace(router)
+}
+

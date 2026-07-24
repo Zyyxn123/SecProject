@@ -88,6 +88,15 @@ internal class BridgeModule : Module() {
         callNativeMethod(OPEN_PAGE, methodArgs, callbackFn)
     }
 
+    fun replacePage(pageName: String, pageData: JSONObject? = null) {
+        val methodArgs = JSONObject()
+        methodArgs.put("pageName", pageName)
+        pageData?.also {
+            methodArgs.put("pageData", it)
+        }
+        callNativeMethod(REPLACE_PAGE, methodArgs, null)
+    }
+
     suspend fun ssoRequest(cmd: String, reqParams: JSONObject): JSONObject? {
         return suspendCoroutine<JSONObject?> { continuation ->
             ssoRequest(cmd, reqParams) {
@@ -333,6 +342,7 @@ internal class BridgeModule : Module() {
     companion object {
         const val MODULE_NAME = "HRBridgeModule"
         const val OPEN_PAGE = "openPage"
+        const val REPLACE_PAGE = "replacePage"
         const val CLOSE_PAGE = "closePage"
         const val LOG = "log"
         const val SSO_REQUEST = "ssoRequest"

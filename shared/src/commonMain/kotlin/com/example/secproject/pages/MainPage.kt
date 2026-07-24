@@ -7,10 +7,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.secproject.base.BasePager
 import com.tencent.kuikly.compose.foundation.background
-import com.tencent.kuikly.compose.foundation.clickable
 import com.tencent.kuikly.compose.foundation.layout.Box
 import com.tencent.kuikly.compose.foundation.layout.Column
-import com.tencent.kuikly.compose.foundation.layout.Row
 import com.tencent.kuikly.compose.foundation.layout.Spacer
 import com.tencent.kuikly.compose.foundation.layout.fillMaxSize
 import com.tencent.kuikly.compose.foundation.layout.fillMaxWidth
@@ -19,12 +17,15 @@ import com.tencent.kuikly.compose.foundation.layout.offset
 import com.tencent.kuikly.compose.foundation.layout.padding
 import com.tencent.kuikly.compose.foundation.layout.size
 import com.tencent.kuikly.compose.foundation.shape.RoundedCornerShape
+import com.tencent.kuikly.compose.material3.Tab
+import com.tencent.kuikly.compose.material3.TabRow
 import com.tencent.kuikly.compose.material3.Text
 import com.tencent.kuikly.compose.setContent
 import com.tencent.kuikly.compose.ui.Alignment
 import com.tencent.kuikly.compose.ui.Modifier
 import com.tencent.kuikly.compose.ui.graphics.Brush
 import com.tencent.kuikly.compose.ui.graphics.Color
+import com.tencent.kuikly.compose.ui.graphics.graphicsLayer
 import com.tencent.kuikly.compose.ui.platform.LocalActivity
 import com.tencent.kuikly.compose.ui.text.font.FontWeight
 import com.tencent.kuikly.compose.ui.unit.dp
@@ -78,7 +79,8 @@ private fun MainContent() {
                 start = 20.dp,
                 end = 20.dp,
                 top = (statusBarHeight + 28).dp,
-                bottom = 24.dp,
+                // Reserve space for the floating tab bar, which overlays the page content.
+                bottom = 128.dp,
             ),
         ) {
             Text("主页面", color = Color(0xFF101828), fontSize = 28.sp, fontWeight = FontWeight.Bold)
@@ -111,51 +113,68 @@ private fun MainContent() {
             }
 
             Spacer(Modifier.weight(1f))
-            FloatingBottomNavigation(
-                items = items,
-                selectedIndex = selectedIndex,
-                onSelected = { selectedIndex = it },
-            )
         }
+
+        FloatingBottomNavigation(
+            modifier = Modifier.align(Alignment.BottomCenter)
+                .padding(start = 20.dp, end = 20.dp, bottom = 24.dp),
+            items = items,
+            selectedIndex = selectedIndex,
+            onSelected = { selectedIndex = it },
+        )
     }
 }
 
 @Composable
 private fun FloatingBottomNavigation(
+    modifier: Modifier,
     items: List<MainNavItem>,
     selectedIndex: Int,
     onSelected: (Int) -> Unit,
 ) {
-    Row(
-        modifier = Modifier.fillMaxWidth().height(72.dp)
-            .background(Color(0xD9FFFFFF), RoundedCornerShape(26.dp))
-            .padding(horizontal = 8.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    val navigationShape = RoundedCornerShape(26.dp)
+    Box(
+        modifier = modifier.fillMaxWidth().height(76.dp)
+            .graphicsLayer {
+                this.shape = navigationShape
+                clip = true
+                shadowElevation = 20f
+                alpha = 0.98f
+            }
+            .background(
+                Brush.linearGradient(
+                    listOf(Color(0xCFFFFFFF), Color(0xB8F5F7FF), Color(0xC7FFFFFF))
+                ),
+                navigationShape,
+            ),
     ) {
-        items.forEachIndexed { index, item ->
-            val selected = index == selectedIndex
-            Column(
-                modifier = Modifier.weight(1f).height(56.dp)
-                    .background(
-                        if (selected) Color(0x146757E8) else Color.Transparent,
-                        RoundedCornerShape(20.dp),
-                    )
-                    .clickable { onSelected(index) },
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(Modifier.height(7.dp))
-                Text(
-                    item.mark,
-                    color = if (selected) Color(0xFF6757E8) else Color(0xFF98A2B3),
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold,
-                )
-                Spacer(Modifier.height(3.dp))
-                Text(
-                    item.label,
-                    color = if (selected) Color(0xFF4F46C7) else Color(0xFF667085),
-                    fontSize = 11.sp,
-                    fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
+        TabRow(
+            selectedTabIndex = selectedIndex,
+            modifier = Modifier.fillMaxSize(),
+            containerColor = Color.Transparent,
+            contentColor = Color(0xFF6757E8),
+            divider = {},
+        ) {
+            items.forEachIndexed { index, item ->
+                Tab(
+                    selected = index == selectedIndex,
+                    onClick = { onSelected(index) },
+                    text = {
+                        Text(
+                            item.label,
+                            fontSize = 11.sp,
+                            fontWeight = if (index == selectedIndex) {
+                                FontWeight.Bold
+                            } else {
+                                FontWeight.Normal
+                            },
+                        )
+                    },
+                    icon = {
+                        Text(item.mark, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                    },
+                    selectedContentColor = Color(0xFF4F46C7),
+                    unselectedContentColor = Color(0xFF667085),
                 )
             }
         }
