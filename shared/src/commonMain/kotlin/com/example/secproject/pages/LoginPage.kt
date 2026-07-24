@@ -8,7 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.secproject.Button
 import com.example.secproject.base.BasePager
-import com.example.secproject.jumpPage
+import com.example.secproject.base.Utils
+import com.example.secproject.replacePage
 import com.tencent.kuikly.compose.animation.core.animateFloatAsState
 import com.tencent.kuikly.compose.animation.core.tween
 import com.tencent.kuikly.compose.foundation.background
@@ -69,6 +70,9 @@ private fun LoginContent() {
             delay(850)
             submitting = false
             loginSuccess = true
+            Utils.bridgeModule(pager.pagerId).toast("登录成功，欢迎回来")
+            delay(200)
+            replacePage(pager, "main")
         }
     }
 
@@ -134,15 +138,21 @@ private fun LoginContent() {
                 Button(
                     onClick = {
                         if (!submitting) {
-                            accountError = if (account.trim().isEmpty()) "请输入账号" else null
-                            passwordError = when {
+                            val newAccountError = if (account.trim().isEmpty()) "请输入账号" else null
+                            val newPasswordError = when {
                                 password.isEmpty() -> "请输入密码"
                                 password.length < 6 -> "密码至少需要 6 位"
                                 else -> null
                             }
+                            accountError = newAccountError
+                            passwordError = newPasswordError
                             if (accountError == null && passwordError == null) {
                                 submitting = true
                                 loginSuccess = false
+                            } else {
+                                Utils.bridgeModule(pager.pagerId).toast(
+                                    newAccountError ?: newPasswordError ?: "请检查输入内容"
+                                )
                             }
                         }
                     },
@@ -159,6 +169,7 @@ private fun LoginContent() {
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable { replacePage(pager, "main") }
                     )
                 }
                 AuthHint(if (loginSuccess) "登录成功，欢迎回来" else null, success = true)
@@ -170,7 +181,7 @@ private fun LoginContent() {
                         color = Color(0xFF5B4CE8),
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 4.dp).clickable { jumpPage(pager, "register") },
+                        modifier = Modifier.padding(start = 4.dp).clickable { replacePage(pager, "register") },
                     )
                 }
             }

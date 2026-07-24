@@ -150,3 +150,19 @@ fun jumpPage(pager: Pager, inputText: String) {
     val pageName = pageData.optString("pageName")
     pager.acquireModule<RouterModule>(RouterModule.MODULE_NAME).openPage(pageName, pageData)
 }
+
+/**
+ * Replaces the current Kuikly page with [inputText] instead of adding another page to the stack.
+ * RouterModule has no replace API, so replacement is expressed as pop-current then push-target.
+ */
+fun replacePage(pager: Pager, inputText: String) {
+    val params = urlParams("pageName=$inputText")
+    val pageData = JSONObject()
+    params.forEach {
+        pageData.put(it.key, it.value)
+    }
+    val pageName = pageData.optString("pageName")
+    val routerModule = pager.acquireModule<RouterModule>(RouterModule.MODULE_NAME)
+    routerModule.closePage()
+    routerModule.openPage(pageName, pageData)
+}

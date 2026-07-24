@@ -8,7 +8,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.secproject.Button
 import com.example.secproject.base.BasePager
-import com.example.secproject.jumpPage
+import com.example.secproject.base.Utils
+import com.example.secproject.replacePage
 import com.tencent.kuikly.compose.animation.core.animateFloatAsState
 import com.tencent.kuikly.compose.animation.core.tween
 import com.tencent.kuikly.compose.foundation.background
@@ -71,6 +72,7 @@ private fun RegisterContent() {
             delay(850)
             submitting = false
             registerSuccess = true
+            Utils.bridgeModule(pager.pagerId).toast("账号创建成功，现在可以去登录")
         }
     }
 
@@ -132,16 +134,23 @@ private fun RegisterContent() {
                 Button(
                     onClick = {
                         if (!submitting) {
-                            accountError = if (account.trim().length < 3) "账号至少需要 3 个字符" else null
-                            passwordError = if (password.length < 6) "密码至少需要 6 位" else null
-                            confirmError = when {
+                            val newAccountError = if (account.trim().length < 3) "账号至少需要 3 个字符" else null
+                            val newPasswordError = if (password.length < 6) "密码至少需要 6 位" else null
+                            val newConfirmError = when {
                                 confirmPassword.isEmpty() -> "请再次输入密码"
                                 confirmPassword != password -> "两次输入的密码不一致"
                                 else -> null
                             }
+                            accountError = newAccountError
+                            passwordError = newPasswordError
+                            confirmError = newConfirmError
                             if (accountError == null && passwordError == null && confirmError == null) {
                                 submitting = true
                                 registerSuccess = false
+                            } else {
+                                Utils.bridgeModule(pager.pagerId).toast(
+                                    newAccountError ?: newPasswordError ?: newConfirmError ?: "请检查输入内容"
+                                )
                             }
                         }
                     },
@@ -160,7 +169,7 @@ private fun RegisterContent() {
                 Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text("已有账号？", color = Color(0xFF667085), fontSize = 14.sp)
                     Text("去登录", color = Color(0xFF0F8F85), fontSize = 14.sp, fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 4.dp).clickable { jumpPage(pager, "login") })
+                        modifier = Modifier.padding(start = 4.dp).clickable { replacePage(pager, "login") })
                 }
             }
         }
